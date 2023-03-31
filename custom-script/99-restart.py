@@ -12,7 +12,7 @@ logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s', datefmt='%
 # DEFINE FUNCTION
 ###########################################################
 def restart():
-    os.popen('s6-svc -r /var/run/s6-rc/servicedirs/svc-prowlarr/')
+    os.popen('s6-svc -r /var/run/s6-rc/servicedirs/svc-sonarr/')
 
 
 ###########################################################
