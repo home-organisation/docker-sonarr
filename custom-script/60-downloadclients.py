@@ -10,9 +10,6 @@ import json
 ###########################################################
 logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=logging.INFO)
 SONARR_DB = '/config/sonarr.db'
-DOWNLOAD_URL = 'localhost'
-DOWNLOAD_PORT = '9091'
-DOWNLOAD_NAME = 'Transmission'
 
 
 ###########################################################
@@ -39,7 +36,7 @@ def set_downloadclients(database, name, url, port, username, password):
         logging.error('SQLite error: %s' % (' '.join(er.args)))
         return None
     else:
-        return {"username": username, "password": password}
+        return {"username": username, "password": password, "url": url, "port": port}
 
 
 def get_downloadclients(database, name):
@@ -62,11 +59,13 @@ def get_downloadclients(database, name):
         logging.error('SQLite error: %s' % (' '.join(er.args)))
         return None
     except ValueError:
-        return {"username": "", "password": ""}
+        return {"username": "", "password": "", "url": "", "port": ""}
     else:
         username = json.loads(rows[0][0])["username"]
         password = json.loads(rows[0][0])["password"]
-        return {"username": username, "password": password}
+        port = json.loads(rows[0][0])["port"]
+        url = json.loads(rows[0][0])["host"]
+        return {"username": username, "password": password, "url": url, "port": port}
 
 
 def update_downloadclients(database, name, url, port, username, password):
@@ -87,17 +86,20 @@ def update_downloadclients(database, name, url, port, username, password):
         logging.error('SQLite error: %s' % (' '.join(er.args)))
         return None
     else:
-        return {"username": username, "password": password}
+        return {"username": username, "password": password, "url": url, "port": port}
 
 
 ###########################################################
 # INIT CONFIG
 ###########################################################
 if __name__ == '__main__':
+    DOWNLOAD_NAME = os.environ.get('DOWNLOAD_NAME')
     DOWNLOAD_USER = os.environ.get('DOWNLOAD_USER')
     DOWNLOAD_PASSWORD = os.environ.get('DOWNLOAD_PASSWORD')
-    if DOWNLOAD_USER is None or DOWNLOAD_PASSWORD is None:
-        logging.warning("DOWNLOAD_USER or DOWNLOAD_PASSWORD with no value, nothing to do")
+    DOWNLOAD_URL = os.environ.get('DOWNLOAD_URL')
+    DOWNLOAD_PORT = os.environ.get('DOWNLOAD_PORT')
+    if DOWNLOAD_USER is None or DOWNLOAD_PASSWORD is None or DOWNLOAD_NAME is None or DOWNLOAD_URL is None or DOWNLOAD_PORT is None:
+        logging.warning("DOWNLOAD_NAME, DOWNLOAD_USER, DOWNLOAD_PASSWORD, DOWNLOAD_URL or DOWNLOAD_PORT with no value, nothing to do")
         sys.exit(0)
 
     logging.info("Set Download Client <%s> for downloader %s to application ..." % (DOWNLOAD_NAME, DOWNLOAD_URL))
@@ -105,12 +107,12 @@ if __name__ == '__main__':
     if CLIENT is None:
         sys.exit(1)
 
-    if CLIENT["username"] == "" and CLIENT["password"] == "":
+    if CLIENT["username"] == "" and CLIENT["password"] == "" and CLIENT["port"] == "" and CLIENT["url"] == "":
         CLIENT = set_downloadclients(SONARR_DB, DOWNLOAD_NAME, DOWNLOAD_URL, DOWNLOAD_PORT, DOWNLOAD_USER, DOWNLOAD_PASSWORD)
         if CLIENT is None:
             sys.exit(1)
 
-    if CLIENT["username"] != DOWNLOAD_USER or CLIENT["password"] != DOWNLOAD_PASSWORD:
+    if CLIENT["username"] != DOWNLOAD_USER or CLIENT["password"] != DOWNLOAD_PASSWORD or CLIENT["port"] != DOWNLOAD_PORT or CLIENT["url"] != DOWNLOAD_URL:
         logging.info("Download Client %s for downloader %s already exist but with an other parameters, update ..." % (DOWNLOAD_NAME, DOWNLOAD_URL))
         CLIENT = update_downloadclients(SONARR_DB, DOWNLOAD_NAME, DOWNLOAD_URL, DOWNLOAD_PORT, DOWNLOAD_USER, DOWNLOAD_PASSWORD)
         if CLIENT is None:
