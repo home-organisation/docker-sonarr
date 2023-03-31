@@ -9,6 +9,7 @@ import logging
 ###########################################################
 logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=logging.INFO)
 SONARR_DB = '/config/sonarr.db'
+DOWNLOAD_URL = 'localhost'
 
 
 ###########################################################
@@ -83,7 +84,6 @@ def update_remotepath(database, url, localpath, remotepath):
 # INIT CONFIG
 ###########################################################
 if __name__ == '__main__':
-    DOWNLOAD_URL = os.environ.get('DOWNLOAD_URL')
     SONARR_REMOTEPATH = os.environ.get('SONARR_REMOTEPATH')
     SONARR_LOCALPATH = os.environ.get('SONARR_LOCALPATH')
     if DOWNLOAD_URL is None or SONARR_LOCALPATH is None or SONARR_REMOTEPATH is None:
