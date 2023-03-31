@@ -59,6 +59,7 @@ def get_rootpath(database):
 
 
 def update_rootpath(database, path):
+    # Update rootpath in database
     data = (path,)
     query = "UPDATE RootFolders SET Path = ?"
 
@@ -78,6 +79,14 @@ def update_rootpath(database, path):
         return path
 
 
+def set_rootdirectory(path):
+    # Create rootpath directory
+    uid = os.environ.get('PUID')
+    gid = os.environ.get('PGID')
+    os.makedirs(path, exist_ok=True)
+    os.chown(path, uid, gid)
+
+
 ###########################################################
 # INIT CONFIG
 ###########################################################
@@ -88,6 +97,7 @@ if __name__ == '__main__':
         sys.exit(0)
 
     logging.info("Set Root Path %s to application ..." % SONARR_ROOTPATH)
+    set_rootdirectory(SONARR_ROOTPATH)
     PATH = get_rootpath(SONARR_DB)
     if PATH is None:
         sys.exit(1)
