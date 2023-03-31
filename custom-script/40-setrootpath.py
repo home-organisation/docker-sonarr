@@ -81,8 +81,8 @@ def update_rootpath(database, path):
 
 def set_rootdirectory(path):
     # Create rootpath directory
-    uid = os.environ.get('PUID')
-    gid = os.environ.get('PGID')
+    uid = int(os.environ.get('PUID'))
+    gid = int(os.environ.get('PGID'))
     os.makedirs(path, exist_ok=True)
     os.chown(path, uid, gid)
 
