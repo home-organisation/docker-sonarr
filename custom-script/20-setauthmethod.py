@@ -20,7 +20,6 @@ def set_authenticationmethod(file, method):
         root = tree.getroot()
 
         root.find("AuthenticationMethod").text = method
-        root.find("AuthenticationRequired").text = "Enabled"
         tree.write(file)
     except FileNotFoundError:
         logging.warning("File %s not found" % file)

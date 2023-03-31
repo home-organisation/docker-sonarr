@@ -83,8 +83,8 @@ def update_credential(database, username, password):
 # INIT CONFIG
 ###########################################################
 if __name__ == '__main__':
-    SONARR_USER = os.environ.get('PROWLARR_USER')
-    SONARR_PASSWORD = os.environ.get('PROWLARR_PASSWORD')
+    SONARR_USER = os.environ.get('SONARR_USER')
+    SONARR_PASSWORD = os.environ.get('SONARR_PASSWORD')
     if SONARR_USER is None or SONARR_PASSWORD is None:
         logging.warning("SONARR_USER or SONARR_PASSWORD with no value, nothing to do")
         sys.exit(0)

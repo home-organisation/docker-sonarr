@@ -59,7 +59,7 @@ def set_apikey(file, apikey):
 ###########################################################
 if __name__ == '__main__':
     # Get environment variable
-    SONARR_APIKEY = os.environ.get('PROWLARR_APIKEY')
+    SONARR_APIKEY = os.environ.get('SONARR_APIKEY')
     if SONARR_APIKEY is None:
         logging.warning("SONARR_APIKEY with no value, nothing to do")
         sys.exit(0)
