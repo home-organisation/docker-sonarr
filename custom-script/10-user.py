@@ -3,6 +3,7 @@ import sys
 import os
 import sqlite3
 import logging
+import hashlib
 
 ###########################################################
 # SET STATIC CONFIG
@@ -90,15 +91,16 @@ if __name__ == '__main__':
         sys.exit(0)
 
     logging.info("Set Credential to application for user %s ..." % SONARR_USER)
+    SONARR_ENCRYPT = hashlib.sha256(SONARR_PASSWORD.encode('utf-8')).hexdigest()
     PASSWORD = get_credential(SONARR_DB, SONARR_USER)
     if PASSWORD is None:
         sys.exit(1)
     elif PASSWORD == "":
-        PASSWORD = set_credential(SONARR_DB, SONARR_USER, SONARR_PASSWORD)
+        PASSWORD = set_credential(SONARR_DB, SONARR_USER, SONARR_ENCRYPT)
         if PASSWORD is None:
             sys.exit(1)
-    elif PASSWORD != SONARR_PASSWORD:
+    elif PASSWORD != SONARR_ENCRYPT:
         logging.info("User %s already exist but with an other password, update ..." % SONARR_USER)
-        PASSWORD = update_credential(SONARR_DB, SONARR_USER, SONARR_PASSWORD)
+        PASSWORD = update_credential(SONARR_DB, SONARR_USER, SONARR_ENCRYPT)
         if PASSWORD is None:
             sys.exit(1)
