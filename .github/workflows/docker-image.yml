@@ -6,8 +6,6 @@ on:
     paths-ignore:
       - '**.md'
       - '.github/**'
-  schedule:
-    - cron: '0 0 */7 * *'
 
 env:
   REGISTRY_REPO: sonarr
