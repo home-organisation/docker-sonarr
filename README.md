@@ -11,6 +11,7 @@ The parameters below are taken from the original image [lscr.io/linuxserver/sona
 | PGID        |  1000            | for GroupID                                                                                                    |
 | TZ          |  Europe/Paris    | Specify a timezone to use, see this [List](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
 
+
 The extra parameters below come from this custom image :
 |  Parameters          | Examples values        | Functions                                                                                 |
 |----------------------|------------------------|-------------------------------------------------------------------------------------------|
