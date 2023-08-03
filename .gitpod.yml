@@ -1,7 +1,6 @@
 tasks:
     - name: Openshift command line
-      before: wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-linux.tar.gz --directory /tmp/
-      init: sudo tar -xzvf /tmp/openshift-client-linux.tar.gz --directory /usr/bin/
+      before: wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-linux.tar.gz --directory /tmp/ && sudo tar -xzvf /tmp/openshift-client-linux.tar.gz --directory /usr/bin/
       command: source <(oc completion bash)
 
 vscode:
