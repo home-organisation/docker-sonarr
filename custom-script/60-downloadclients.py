@@ -60,7 +60,7 @@ def get_downloadclients(database, name):
         logging.error('SQLite error: %s' % (' '.join(er.args)))
         return None
     except ValueError:
-        return {"username": "", "password": "", "url": "", "port": ""}
+        return {"username": "", "password": "", "url": "", "port": "", "category": ""}
     else:
         username = json.loads(rows[0][0])["username"]
         password = json.loads(rows[0][0])["password"]
