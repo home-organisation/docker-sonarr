@@ -2,7 +2,7 @@
 import os
 import sys
 import logging
-import xml.etree.ElementTree as ET
+from defusedxml.ElementTree import parse
 
 ###########################################################
 # SET STATIC CONFIG
@@ -17,7 +17,7 @@ CONFIG_FILE = '/config/config.xml'
 def get_apikey(file):
     # Get ApiKey from xml config files
     try:
-        tree = ET.parse(file)
+        tree = parse(file)
         root = tree.getroot()
         apikey = root.find("ApiKey")
 
@@ -29,7 +29,7 @@ def get_apikey(file):
     except FileNotFoundError:
         logging.error("File %s not found" % file)
         return None
-    except ET.ParseError:
+    except parse.ParseError:
         logging.error("File %s is not readable by xml parser" % file)
         return None
     else:
@@ -39,7 +39,7 @@ def get_apikey(file):
 def set_apikey(file, apikey):
     # Set ApiKey to xml config files
     try:
-        tree = ET.parse(file)
+        tree = parse(file)
         root = tree.getroot()
 
         root.find("ApiKey").text = apikey
@@ -47,7 +47,7 @@ def set_apikey(file, apikey):
     except FileNotFoundError:
         logging.error("File %s not found" % file)
         return None
-    except ET.ParseError:
+    except parse.ParseError:
         logging.error("File %s is not readable by xml parser" % file)
         return None
     else:

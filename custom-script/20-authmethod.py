@@ -2,7 +2,7 @@
 import logging
 import sys
 import os
-import xml.etree.ElementTree as ET
+from defusedxml.ElementTree import parse
 
 ###########################################################
 # SET STATIC CONFIG
@@ -17,7 +17,7 @@ CONFIG_FILE = '/config/config.xml'
 def set_authenticationmethod(file, method):
     # Set Authentication method to xml config files
     try:
-        tree = ET.parse(file)
+        tree = parse(file)
         root = tree.getroot()
 
         root.find("AuthenticationMethod").text = method
@@ -25,7 +25,7 @@ def set_authenticationmethod(file, method):
     except FileNotFoundError:
         logging.warning("File %s not found" % file)
         return None
-    except ET.ParseError:
+    except parse.ParseError:
         logging.warning("File %s is not readable by xml parser" % file)
         return None
     else:
