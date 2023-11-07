@@ -27,4 +27,3 @@ The extra parameters below come from this custom image :
 | DOWNLOAD_PORT        |  9091                  | Download Client - Transmission port                                                       |
 | DOWNLOAD_USER        |  admin                 | Download Client - Transmission username                                                   |
 | DOWNLOAD_PASSWORD    |  ****                  | Download Client - Transmission password                                                   |
-
