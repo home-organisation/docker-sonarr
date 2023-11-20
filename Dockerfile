@@ -1,3 +1,4 @@
+#Last package update 18/11/2023
 FROM lscr.io/linuxserver/sonarr:latest
 LABEL Maintainer="bizalu"
 
