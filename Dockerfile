@@ -4,7 +4,8 @@ LABEL Maintainer="bizalu"
 
 # Prepare python environment
 ENV PYTHONUNBUFFERED=1
-RUN apt-get update && apt-get upgrade -y && apt-get install -y python3 python3-defusedxml && apt-get clean
+RUN apk add --no-cache python3 py3-defusedxml py3-pip
+RUN apk -U upgrade --no-cache
 RUN if [ ! -e /usr/bin/python ]; then ln -sf python3 /usr/bin/python ; fi
 
 # Install custom post files
