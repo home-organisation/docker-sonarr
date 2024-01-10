@@ -17,8 +17,8 @@ SONARR_DB = '/config/sonarr.db'
 ###########################################################
 def set_downloadclients(database, name, url, port, username, password, category):
     # Create download clients in database
-    data = ("1", name, "Transmission", '{"host": "' + url + '", "port": "' + port
-            + '", "useSsl": "false", "urlBase": "/transmission/", "username": "' + username + '", \
+    data = ("1", name, "Transmission", '{"host": "' + url + '", "port": ' + port
+            + ', "useSsl": false, "urlBase": "/transmission/", "username": "' + username + '", \
             "password": "' + password + '", "tvCategory": "' + category +'"}',
             "TransmissionSettings", "1", "1", "1")
     query = "INSERT INTO DownloadClients (Enable,Name,Implementation,Settings,ConfigContract,Priority," \
@@ -71,7 +71,7 @@ def get_downloadclients(database, name):
 
 
 def update_downloadclients(database, name, url, port, username, password, category):
-    data = ('{"host": "' + url + '", "port": "' + port + '", "useSsl": "false", "urlBase": "/transmission/", "username": "'
+    data = ('{"host": "' + url + '", "port": ' + port + ', "useSsl": false, "urlBase": "/transmission/", "username": "'
             + username + '", "password": "' + password + '", "tvCategory": "' + category +'"}', name)
     query = "UPDATE DownloadClients SET Settings = ? WHERE Name = ?"
 
