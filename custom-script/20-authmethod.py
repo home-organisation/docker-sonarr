@@ -36,7 +36,7 @@ def set_authenticationmethod(file, method):
 # INIT CONFIG
 ###########################################################
 if __name__ == '__main__':
-    SONARR_AUTHMETHOD = os.environ.get('SONARR_AUTHMETHOD')
+    SONARR_AUTHMETHOD = os.environ.get('SONARR_AUTHMETHOD') or "Forms"
     if SONARR_AUTHMETHOD is None or SONARR_AUTHMETHOD not in ["Forms", "Basic"] :
         logging.warning("SONARR_AUTHMETHOD <%s> is empty or has unaccepted value (Forms or Basic), nothing to do" % SONARR_AUTHMETHOD)
         sys.exit(0)
