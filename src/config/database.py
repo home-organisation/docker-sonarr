@@ -141,9 +141,9 @@ class Database:
 
     def set_namingconfig(self, enable: str):
         if enable == "True":
-            query = 'INSERT INTO "NamingConfig" ("MultiEpisodeStyle", "RenameEpisodes", "StandardEpisodeFormat", "DailyEpisodeFormat", "SeasonFolderFormat", "SeriesFolderFormat", "AnimeEpisodeFormat", "ReplaceIllegalCharacters", "SpecialsFolderFormat") VALUES(0, True, \'{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}\', \'{Series Title} - {Air-Date} - {Episode Title} {Quality Full}\', \'Season {season}\', \'{Series Title}\', \'{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}\', 1, \'Specials\')'
+            query = 'INSERT INTO "NamingConfig" ("MultiEpisodeStyle", "RenameEpisodes", "StandardEpisodeFormat", "DailyEpisodeFormat", "SeasonFolderFormat", "SeriesFolderFormat", "AnimeEpisodeFormat", "ReplaceIllegalCharacters", "SpecialsFolderFormat") VALUES(0, True, \'{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}\', \'{Series Title} - {Air-Date} - {Episode Title} {Quality Full}\', \'Season {season}\', \'{Series Title}\', \'{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}\', \'1\', \'Specials\')'
         else:
-            query = 'INSERT INTO "NamingConfig" ("MultiEpisodeStyle", "RenameEpisodes", "StandardEpisodeFormat", "DailyEpisodeFormat", "SeasonFolderFormat", "SeriesFolderFormat", "AnimeEpisodeFormat", "ReplaceIllegalCharacters", "SpecialsFolderFormat") VALUES(0, False, \'{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}\', \'{Series Title} - {Air-Date} - {Episode Title} {Quality Full}\', \'Season {season}\', \'{Series Title}\', \'{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}\', 1, \'Specials\')'
+            query = 'INSERT INTO "NamingConfig" ("MultiEpisodeStyle", "RenameEpisodes", "StandardEpisodeFormat", "DailyEpisodeFormat", "SeasonFolderFormat", "SeriesFolderFormat", "AnimeEpisodeFormat", "ReplaceIllegalCharacters", "SpecialsFolderFormat") VALUES(0, False, \'{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}\', \'{Series Title} - {Air-Date} - {Episode Title} {Quality Full}\', \'Season {season}\', \'{Series Title}\', \'{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}\', \'1\', \'Specials\')'
 
         self.set(query)
 
