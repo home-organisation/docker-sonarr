@@ -114,21 +114,21 @@ class Database:
         return username, password, port, url, category, remotepath, localpath
 
     def set_download(self, name: str, username: str, password: str, port: str, url: str, category: str, remotepath: str, localpath: str):
-        query = 'INSERT INTO "DownloadClients" ("Enable", "Name", "Implementation", "Settings", "ConfigContract", "Priority", "RemoveCompletedDownloads", "RemoveFailedDownloads") VALUES(\'1\', \''+ name +'\', \'Transmission\', \'{"host": "' + url + '", "port": ' + port + ', "useSsl": false, "urlBase": "/transmission/", "username": "' + username + '", "password": "' + password + '", "movieCategory": "' + category + '"}\', \'TransmissionSettings\', \'1\', \'1\', \'1\')'
+        query = 'INSERT INTO "DownloadClients" ("Enable", "Name", "Implementation", "Settings", "ConfigContract", "Priority", "RemoveCompletedDownloads", "RemoveFailedDownloads") VALUES(\'1\', \''+ name +'\', \'Transmission\', \'{"host": "' + url + '", "port": ' + port + ', "useSsl": false, "urlBase": "/transmission/", "username": "' + username + '", "password": "' + password + '", "tvCategory": "' + category + '"}\', \'TransmissionSettings\', \'1\', \'1\', \'1\')'
         self.set(query)
 
         query = 'INSERT INTO "RemotePathMappings" ("Host", "RemotePath", "LocalPath") VALUES(\'' + url + '\', \'' + remotepath + '\', \'' + localpath + '\')'
         self.set(query)
 
     def update_download(self, name: str, username: str, password: str, port: str, url: str, category: str, remotepath: str, localpath: str):
-        query = 'UPDATE "DownloadClients" SET "Settings" = \'{"host": "' + url + '", "port": ' + port + ', "useSsl": false, "urlBase": "/transmission/", "username": "' + username + '", "password": "' + password + '", "movieCategory": "' + category + '"}\' WHERE "Name" = \'' + name + '\''
+        query = 'UPDATE "DownloadClients" SET "Settings" = \'{"host": "' + url + '", "port": ' + port + ', "useSsl": false, "urlBase": "/transmission/", "username": "' + username + '", "password": "' + password + '", "tvCategory": "' + category + '"}\' WHERE "Name" = \'' + name + '\''
         self.set(query)
 
         query = 'UPDATE "RemotePathMappings" SET "RemotePath" = \'' + remotepath +'\', "LocalPath" = \'' + localpath +'\', "Host" = \'' + url +'\''
         self.set(query)
 
     def get_namingconfig(self) -> None | str:
-        query = 'SELECT "RenameMovies" FROM "NamingConfig"'
+        query = 'SELECT "RenameEpisodes" FROM "NamingConfig"'
         row = self.get(query)
 
         if row is not None:
@@ -141,62 +141,26 @@ class Database:
 
     def set_namingconfig(self, enable: str):
         if enable == "True":
-            query = 'INSERT INTO "NamingConfig" ("MultiEpisodeStyle", "ReplaceIllegalCharacters", "StandardMovieFormat", "MovieFolderFormat", "ColonReplacementFormat", "RenameMovies") VALUES(0, True, \'{Movie Title} ({Release Year}) {Quality Full}\', \'{Movie Title} ({Release Year})\', 0, True)'
+            query = 'INSERT INTO "NamingConfig" ("MultiEpisodeStyle", "RenameEpisodes", "StandardEpisodeFormat", "DailyEpisodeFormat", "SeasonFolderFormat", "SeriesFolderFormat", "AnimeEpisodeFormat", "ReplaceIllegalCharacters", "SpecialsFolderFormat") VALUES(0, True, \'{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}\', \'{Series Title} - {Air-Date} - {Episode Title} {Quality Full}\', \'Season {season}\', \'{Series Title}\', \'{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}\', 1, \'Specials\')'
         else:
-            query = 'INSERT INTO "NamingConfig" ("MultiEpisodeStyle", "ReplaceIllegalCharacters", "StandardMovieFormat", "MovieFolderFormat", "ColonReplacementFormat", "RenameMovies") VALUES(0, True, \'{Movie Title} ({Release Year}) {Quality Full}\', \'{Movie Title} ({Release Year})\', 0, False)'
+            query = 'INSERT INTO "NamingConfig" ("MultiEpisodeStyle", "RenameEpisodes", "StandardEpisodeFormat", "DailyEpisodeFormat", "SeasonFolderFormat", "SeriesFolderFormat", "AnimeEpisodeFormat", "ReplaceIllegalCharacters", "SpecialsFolderFormat") VALUES(0, False, \'{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}\', \'{Series Title} - {Air-Date} - {Episode Title} {Quality Full}\', \'Season {season}\', \'{Series Title}\', \'{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}\', 1, \'Specials\')'
 
         self.set(query)
 
     def update_namingconfig(self, enable: str):
         if enable == "True":
-            query = 'UPDATE "NamingConfig" SET "RenameMovies" = True'
+            query = 'UPDATE "NamingConfig" SET "RenameEpisodes" = True'
         else:
-            query = 'UPDATE "NamingConfig" SET "RenameMovies" = False'
+            query = 'UPDATE "NamingConfig" SET "RenameEpisodes" = False'
 
         self.set(query)
 
-    def set_custom_format(self):
-        # Set HEVC format
-        query = 'SELECT * FROM "CustomFormats" WHERE "Name" = \'HEVC\''
-        row = self.get(query)
-        if row is None:
-            query = 'INSERT INTO "CustomFormats" ("Name", "Specifications", "IncludeCustomFormatWhenRenaming") VALUES(\'HEVC\', \'[{ "type": "ReleaseTitleSpecification", "body": { "order": 1, "implementationName": "Release Title", "infoLink": "https://wiki.servarr.com/radarr/settings#custom-formats-2", "value": "(((x|h)\\\\.?265)|(HEVC))", "name": "x265", "negate": false, "required": true }}]\', False)'
-            self.set(query)
-
-        # Set AVC format
-        query = 'SELECT * FROM "CustomFormats" WHERE "Name" = \'AVC\''
-        row = self.get(query)
-        if row is None:
-            query = 'INSERT INTO "CustomFormats" ("Name", "Specifications", "IncludeCustomFormatWhenRenaming") VALUES(\'AVC\', \'[{ "type": "ReleaseTitleSpecification", "body": { "order": 1, "implementationName": "Release Title", "infoLink": "https://wiki.servarr.com/radarr/settings#custom-formats-2", "value": "(x|h)\\\\.?264", "name": "x264", "negate": false, "required": true}}]\', False)'
-            self.set(query)
-
-        # Set VOSTFR format
-        query = 'SELECT * FROM "CustomFormats" WHERE "Name" = \'VOSTFR\''
-        row = self.get(query)
-        if row is None:
-            query = 'INSERT INTO "CustomFormats" ("Name", "Specifications", "IncludeCustomFormatWhenRenaming") VALUES(\'VOSTFR\', \'[{ "type": "ReleaseTitleSpecification", "body": { "order": 1, "implementationName": "Release Title", "infoLink": "https://wiki.servarr.com/radarr/settings#custom-formats-2", "value": "\\\\b(VOST.*?FR(E|A)?)\\\\b", "name": "VOSTFR", "negate": false, "required": true}}, { "type": "ReleaseTitleSpecification", "body": { "order": 1, "implementationName": "Release Title", "infoLink": "https://wiki.servarr.com/radarr/settings#custom-formats-2", "value": "\\\\b(SUBFR(A|ENCH)?)\\\\b", "name": "SUBFRENCH", "negate": false, "required": true}}]\', False)'
-            self.set(query)
-
-    def set_custom_profile(self):
-        # Set HD-1080p-FR profile
-        query = 'SELECT * FROM "QualityProfiles" WHERE "Name" = \'HD-1080p-FR\''
-        row = self.get(query)
-        if row is None:
-            query = 'INSERT INTO "QualityProfiles" ("Name", "Cutoff", "Items", "Language", "FormatItems", "UpgradeAllowed", "MinFormatScore", "CutoffFormatScore") VALUES(\'HD-1080p-FR\', 30, \'[{ "quality": 9, "items": [], "allowed": true }, { "id": 1002, "name": "WEB 1080p", "items": [{ "quality": 3, "items": [], "allowed": true }, { "quality": 15, "items": [], "allowed": true }], "allowed": true}, { "quality": 7, "items": [], "allowed": true }, { "quality": 30, "items": [], "allowed": true }]\', 2, \'[{ "format": 1, "score": 1 }, { "format": 2, "score": 1 }, { "format": 3, "score": 0 }]\', False, 1, 0)'
-            self.set(query)
-
-        # Set HD-1080p-VO profile
-        query = 'SELECT * FROM "QualityProfiles" WHERE "Name" = \'HD-1080p-VO\''
-        row = self.get(query)
-        if row is None:
-            query = 'INSERT INTO "QualityProfiles" ("Name", "Cutoff", "Items", "Language", "FormatItems", "UpgradeAllowed", "MinFormatScore", "CutoffFormatScore") VALUES(\'HD-1080p-VO\', 30, \'[{ "quality": 9, "items": [], "allowed": true }, { "id": 1002, "name": "WEB 1080p", "items": [{ "quality": 3, "items": [], "allowed": true }, { "quality": 15, "items": [], "allowed": true }], "allowed": true}, { "quality": 7, "items": [], "allowed": true }, { "quality": 30, "items": [], "allowed": true }]\', -2, \'[{ "format": 1, "score": 1 }, { "format": 2, "score": 1 }, { "format": 3, "score": 1 }]\', False, 2, 0)'
-            self.set(query)
 
 class Postgres(Database):
     def connect(self, user: str, password: str, host: str, port: str):
         # connecting to PostgreSQL database
         try:
-            self.conn = psycopg2.connect(database="radarr-main", user=user, password=password, host=host, port=port)
+            self.conn = psycopg2.connect(database="sonarr-main", user=user, password=password, host=host, port=port)
         except (psycopg2.DatabaseError, Exception) as error:
             logging.error("Connection to postgresql database failed")
             logging.error(error)
