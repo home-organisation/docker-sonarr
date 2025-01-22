@@ -2,7 +2,7 @@
 # shellcheck shell=bash
 
 # Directories
-SCRIPTS_DIR="/etc/cont-post.d"
+SCRIPTS_DIR="/custom-cont-post.d"
 
 # Make sure postinstall directory exists and has files in it
 if [[ -e "${SCRIPTS_DIR}" ]] && [[ -n "$(/bin/ls -A ${SCRIPTS_DIR} 2>/dev/null)" ]]; then
@@ -11,7 +11,7 @@ if [[ -e "${SCRIPTS_DIR}" ]] && [[ -n "$(/bin/ls -A ${SCRIPTS_DIR} 2>/dev/null)"
         NAME="$(basename "${SCRIPT}")"
         if [[ -f "${SCRIPT}" ]]; then
             echo "[postinstall] ${NAME}: executing..."
-            /usr/bin/python "${SCRIPT}"
+            /bin/bash "${SCRIPT}"
             echo "[postinstall] ${NAME}: exited $?"
         elif [[ ! -f "${SCRIPT}" ]]; then
             echo "[postinstall] ${NAME}: is not a file"
