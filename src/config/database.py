@@ -99,7 +99,7 @@ class Database:
             password = json.loads(config[0])["password"]
             port = str(json.loads(config[0])["port"])
             url = json.loads(config[0])["host"]
-            category = json.loads(config[0])["movieCategory"]
+            category = json.loads(config[0])["tvCategory"]
 
         # Get remote path mapping associated with the download client
         if url is not None:
