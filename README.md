@@ -13,17 +13,32 @@ The parameters below are taken from the original image [lscr.io/linuxserver/sona
 
 
 The extra parameters below come from this custom image :
-|  Parameters          | Examples values        | Functions                                                                                 |
-|----------------------|------------------------|-------------------------------------------------------------------------------------------|
-| SONARR_AUTHMETHOD    |  Forms (default)       | Authentication method for web authentication. Acceptable value is **Forms** or **Basic**  |
-| SONARR_USER          |  admin (default)       | Username for web authentication                                                           |
-| SONARR_PASSWORD      |  ****                  | Password for web authentication                                                           |
-| SONARR_APIKEY        |  ****                  | Key for api authentication                                                                |
-| SONARR_ROOTPATH      |  /tv/tvshows           | Local media directory                                                                     |
-| SONARR_REMOTEPATH    |  /downloads/           | Remote Path Mappings - remote download directory associate to DOWNLOAD_URL                |
-| SONARR_LOCALPATH     |  /tv/downloads/        | Remote Path Mappings - local download directory associate to DOWNLOAD_URL                 |
-| DOWNLOAD_NAME        |  Transmission          | Download Client - Transmission name                                                       |
-| DOWNLOAD_URL         |  localhost             | Download Client - Transmission url                                                        |
-| DOWNLOAD_PORT        |  9091                  | Download Client - Transmission port                                                       |
-| DOWNLOAD_USER        |  admin                 | Download Client - Transmission username                                                   |
-| DOWNLOAD_PASSWORD    |  ****                  | Download Client - Transmission password                                                   |
+* Sonarr parameters :
+
+| Parameters          | Examples values | Functions                                                                                |
+|---------------------|-----------------|------------------------------------------------------------------------------------------|
+| AUTHMETHOD          | Forms (default) | Authentication method for web authentication. Acceptable value is **Forms** or **Basic** |
+| APIKEY (optional)   | ****            | Key for api authentication                                                               |
+| USER                | admin (default) | Username for web authentication                                                          |
+| PASSWORD (required) | ****            | Password for web authentication                                                          |
+| NAMING              | True (default)  | Enable or disable rename Tvshows function Acceptable value is **True** or **False**      |
+
+* Database parameters (if not set, sqlite will be used) :
+
+|  Parameters          | Examples values       | Functions                                                  |
+|----------------------|-----------------------|------------------------------------------------------------|
+| DBUSER               | sonarr (optional)     | Database - postgresql username                             |
+| DBPASS               | **** (optional)       | Database - postgresql password                             |
+| DBPORT               | 5432 (optional)       | Database - postgresql port                                 |
+| DBHOST               | postgresql (optional) | Database - postgresql host                                 |
+
+* Download client parameters :
+
+| Parameters                   | Examples values        | Functions                                 |
+|------------------------------|------------------------|-------------------------------------------|
+| DOWNLOAD_NAME                | Transmission (default) | Download Client - Transmission name       |
+| DOWNLOAD_URL (required)      | transmission           | Download Client - Transmission url        |
+| DOWNLOAD_PORT                | 9091 (default)         | Download Client - Transmission port       |
+| DOWNLOAD_USER                | admin (default)        | Download Client - Transmission username   |
+| DOWNLOAD_PASSWORD (required) | ****                   | Download Client - Transmission password   |
+| DOWNLOAD_CATEGORY            | tvshows (default)      | Download Client - Transmission category   |
